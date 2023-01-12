@@ -1,67 +1,119 @@
 @prefix : <http://www.semanticweb.org/szm/dua-ontology#> .
-@prefix ns1: <http://quranontology.com/Resource/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ns1:City a owl:Class ;
-    rdfs:subClassOf ns1:GeographicalLocation .
+<http://quranontology.com/Resource/City> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
 
-ns1:Construction a owl:Class ;
-    rdfs:subClassOf ns1:Location .
+<http://quranontology.com/Resource/Construction> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/Location> .
 
-ns1:DivineLocation a owl:Class ;
-    rdfs:subClassOf ns1:Location .
+<http://quranontology.com/Resource/DisplayText> a owl:DatatypeProperty ;
+    rdfs:domain <http://quranontology.com/Resource/Verse> ;
+    rdfs:range xsd:string .
 
-ns1:HellLocation a owl:Class ;
-    rdfs:subClassOf ns1:AfterlifeLocation .
+<http://quranontology.com/Resource/DivineLocation> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/Location> .
 
-ns1:HistoricalPlace a owl:Class ;
-    rdfs:subClassOf ns1:GeographicalLocation .
+<http://quranontology.com/Resource/HellLocation> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/AfterlifeLocation> .
 
-ns1:IsPartOf a owl:ObjectProperty,
+<http://quranontology.com/Resource/HistoricalPlace> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+<http://quranontology.com/Resource/IsPartOf> a owl:ObjectProperty,
         owl:TransitiveProperty ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( ns1:Verse :QuranicDua ) ] ;
+            owl:unionOf ( <http://quranontology.com/Resource/Verse> :QuranicDua ) ] ;
     rdfs:range [ a owl:Class ;
-            owl:unionOf ( ns1:Chapter ns1:Verse ) ] .
+            owl:unionOf ( <http://quranontology.com/Resource/Chapter> <http://quranontology.com/Resource/Verse> ) ] .
 
-ns1:MentionedIn a owl:ObjectProperty,
+<http://quranontology.com/Resource/MentionedIn> a owl:ObjectProperty,
         owl:TransitiveProperty ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( ns1:Location ns1:Prophet ) ] ;
+            owl:unionOf ( <http://quranontology.com/Resource/Location> <http://quranontology.com/Resource/Prophet> ) ] ;
     rdfs:range [ a owl:Class ;
-            owl:unionOf ( ns1:Chapter ns1:Verse ) ] .
+            owl:unionOf ( <http://quranontology.com/Resource/Chapter> <http://quranontology.com/Resource/Verse> ) ] .
 
-ns1:Mountain a owl:Class ;
-    rdfs:subClassOf ns1:GeographicalLocation .
+<http://quranontology.com/Resource/Mountain> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
 
-ns1:ParadiseLocation a owl:Class ;
-    rdfs:subClassOf ns1:AfterlifeLocation .
+<http://quranontology.com/Resource/ParadiseLocation> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/AfterlifeLocation> .
 
-ns1:River a owl:Class ;
-    rdfs:subClassOf ns1:GeographicalLocation .
+<http://quranontology.com/Resource/River> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
 
-ns1:Sea a owl:Class ;
-    rdfs:subClassOf ns1:GeographicalLocation .
+<http://quranontology.com/Resource/Sea> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+<http://quranontology.com/Resource/VerseAbsoluteIndex> a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain <http://quranontology.com/Resource/Verse> ;
+    rdfs:range xsd:nonNegativeInteger .
+
+<http://schema.org/author> a owl:ObjectProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
+    rdfs:range <http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> .
+
+<http://www.i-knex.com/ontology/hadith#engBookNo> a owl:DatatypeProperty .
 
 <http://www.i-knex.com/ontology/hadith#engHadithNo> a owl:DatatypeProperty ;
     rdfs:subPropertyOf owl:topDataProperty .
+
+<http://www.i-knex.com/ontology/hadith#engVolNo> a owl:DatatypeProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
+    rdfs:range xsd:nonNegativeInteger .
+
+<http://www.i-knex.com/ontology/hadith#fullHadithText> a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+    rdfs:range xsd:string .
+
+<http://www.i-knex.com/ontology/hadith#hadithBookIntro> a owl:DatatypeProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+    rdfs:range xsd:string .
+
+<http://www.i-knex.com/ontology/hadith#hadithBookNo> a owl:DatatypeProperty .
+
+<http://www.i-knex.com/ontology/hadith#hadithChapterNo> a owl:DatatypeProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:unionOf ( rdfs:Literal xsd:nonNegativeInteger xsd:string ) ] .
+
+<http://www.i-knex.com/ontology/hadith#hadithReferenceNo> a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+    rdfs:range rdfs:Literal,
+        xsd:nonNegativeInteger,
+        xsd:string .
 
 <http://www.i-knex.com/ontology/hadith#hadithURL> a owl:DatatypeProperty,
         owl:NamedIndividual ;
     rdfs:label "Hadith URL" ;
     rdfs:comment "link to the hadith on the Islamic Urdu Website" .
 
+<http://www.i-knex.com/ontology/hadith#hasHadithText> a owl:ObjectProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+    rdfs:range <http://www.i-knex.com/ontology/hadith#HadithText> .
+
+<http://www.i-knex.com/ontology/hadith#hasNarratorChain> a owl:ObjectProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+    rdfs:range <http://www.i-knex.com/ontology/hadith#NarratorChain> .
+
 <http://www.i-knex.com/ontology/hadith#hasNarratorSegment> a owl:ObjectProperty ;
     rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChain> ;
     rdfs:range <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> .
 
-<http://www.i-knex.com/ontology/hadith#refersToNarrator> a owl:FunctionalProperty,
-        owl:ObjectProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> ;
-    rdfs:range <http://www.i-knex.com/ontology/hadith#HadithNarrator> .
+<http://www.i-knex.com/ontology/hadith#name> a owl:DatatypeProperty .
+
+<http://www.i-knex.com/ontology/hadith#narratorID> a owl:DatatypeProperty .
+
+<http://www.i-knex.com/ontology/hadith#narratorURL> a owl:DatatypeProperty .
+
+<http://www.i-knex.com/ontology/hadith#popularName> a owl:DatatypeProperty .
 
 <http://www.semanticweb.org/szm/dua-ontology> a owl:Ontology .
 
@@ -2412,7 +2464,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-10 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran17-24 ;
     :duaArabicText "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِیْ صَغِيْرًا"^^xsd:string ;
     :duaEnglishText "My Lord, have mercy upon them as they brought me up [when I was] small."^^xsd:string ;
     :duaEnglishTitle "Dua for Parents"^^xsd:string ;
@@ -2423,7 +2474,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-11 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran28-24 ;
     :duaArabicText "رَبِّ اِنِّیْ لِمَآ اَنْزَلْتَ اِلَیَّ مِنْ خَيْرٍ فَقِيْر"^^xsd:string ;
     :duaEnglishText "My Lord, indeed I am, for whatever good You would send down to me, in need."^^xsd:string ;
     :duaEnglishTitle "Seeking Goodness in Every Task"^^xsd:string ;
@@ -2444,7 +2494,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-13 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran23-118 ;
     :duaArabicText "رَبِّ اغْفِرْ وَارْحَمْ وَاَنْتَ خَیْرُالرّٰحِمِیْنَ"^^xsd:string ;
     :duaEnglishText "My Lord, forgive and have mercy, and You are the best of the merciful."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness and Mercy"^^xsd:string ;
@@ -2465,7 +2514,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-15 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran17-80 ;
     :duaArabicText "رَبِّ اَدْخِلْنِیْ مُدْخَلَ صِدْقٍ وَّاَخْرِجْنِیْ مُخْرَجَ صِدْقٍ وَّاجْعَلْ لِّیْ مِنْ لَّدُنْكَ سُلْطانًا نَّصِيْرًا"^^xsd:string ;
     :duaEnglishText "My Lord, cause me to enter a sound entrance and to exit a sound exit and grant me from Yourself a supporting authority."^^xsd:string ;
     :duaEnglishTitle "Dua when Visiting a New Place"^^xsd:string ;
@@ -2476,7 +2524,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-16 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran23-29 ;
     :duaArabicText "رَبِّ اَنْزِلْنِیْ مُنْزَلًا مُّبَارَكًا وَّ اَنْتَ خَيْرُ الْمُنْزِلِيْنَ"^^xsd:string ;
     :duaEnglishText "My Lord, let me land at a blessed landing place, and You are the best to accommodate [us]."^^xsd:string ;
     :duaEnglishTitle "Supplication while Camping on the Journey"^^xsd:string ;
@@ -2497,8 +2544,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-18 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran23-97,
-        ns1:quran23-98 ;
     :duaArabicText "رَّبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ ۝ وَاَعُوْذُبِكَ رَبِّ اَنْ يَّحْضُرُوْنِ"^^xsd:string ;
     :duaEnglishText "My Lord, I seek refuge in You from the incitements of the devils. And I seek refuge in You, my Lord, lest they be present with me."^^xsd:string ;
     :duaEnglishTitle "Seeking Refuge from the Whispers of Shaitan"^^xsd:string ;
@@ -2539,7 +2584,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-22 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran27-19 ;
     :duaArabicText "رَبِّ اَوْزِعْنِیْ اَنْ اَشْكُرَ نِعْمَتَكَ الَّتِیْ اَنْعَمْتَ عَلَیَّ وَعَلَىٰ  وَالِدَیَّ وَاَنْ اَعْمَلَ صَالِحًا تَرْضَاہُ وَاَدْخِلْنِیْ بِرَحْمَتِكَ فِیْ عِبَادِكَ الصَّالِحِیْنَ"^^xsd:string ;
     :duaEnglishText "My Lord, enable me to be grateful for Your favor which You have bestowed upon me and upon my parents and to do righteousness of which You approve. And admit me by Your mercy into [the ranks of] Your righteous servants."^^xsd:string ;
     :duaEnglishTitle "Asking for the Ability to be Grateful"^^xsd:string ;
@@ -2550,7 +2594,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-23 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran46-15 ;
     :duaArabicText "رَبِّ اَوْزِعْنِیْ اَنْ اَشْكُرَ نِعْمَتَكَ الَّتِیْ اَنْعَمْتَ عَلَیَّ وَعَلَىٰ  وَالِدَیَّ وَاَنْ اَعْمَلَ صَالِحًا تَرْضَاہُ وَاَصْلِحْ  لِیْ فِیْ ذُرِّيَّتِیْ ۚ اِنِّیْ تُبْتُ اِلَیْكَ وَاِنِّیْ مِنَ الْمُسْلِمِیْنَ"^^xsd:string ;
     :duaEnglishText "My Lord, enable me to be grateful for Your favor which You have bestowed upon me and upon my parents and to work righteousness of which You will approve and make righteous for me my offspring. Indeed, I have repented to You, and indeed, I am of the Muslims."^^xsd:string ;
     :duaEnglishTitle "Asking for the Ability to be Grateful"^^xsd:string ;
@@ -2561,7 +2604,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-24 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran2-201 ;
     :duaArabicText "رَبَّنَآ اٰتِنَا فِی الدُّنْيا حَسَنَةً وَّ فِی الْاٰخِرَةِ حَسَنَةً وَّ قِنَا عَذَابَ النَّارِ"^^xsd:string ;
     :duaEnglishText "Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire."^^xsd:string ;
     :duaEnglishTitle "Dua for Goodness in this Life and the Next"^^xsd:string ;
@@ -2582,7 +2624,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-26 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran60-4 ;
     :duaArabicText "رَبَّنَا عَلَیْكَ تَوَكَّلْنَا وَاِلَيْكَ اَنَبْنَا وَاِلَيْكَ الْمَصِيْرُ"^^xsd:string ;
     :duaEnglishText "Our Lord, upon You we have relied, and to You we have returned, and to You is the destination."^^xsd:string ;
     :duaEnglishTitle "Absolute Trust in Allah"^^xsd:string ;
@@ -2613,7 +2654,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-29 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran25-74 ;
     :duaArabicText "رَبَّنَا هَبْ لَنَا مِنْ اَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ اَعْيُنٍ وَّاجْعَلْنَا لِلْمُتَّقِيْنَ اِمَامًا"^^xsd:string ;
     :duaEnglishText "Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous."^^xsd:string ;
     :duaEnglishTitle "Asking Allah for Righteous Spouse and Offsprings"^^xsd:string ;
@@ -2624,7 +2664,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-30 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran7-126 ;
     :duaArabicText "رَبَّنَا  اَفْرِغْ عَلَیْنَا صَبْرًا وَّ تَوَفَّنَا مُسْلِمِیْنَ"^^xsd:string ;
     :duaEnglishText "Our Lord, pour upon us patience and let us die as Muslims [in submission to You]."^^xsd:string ;
     :duaEnglishTitle "Dua for Patience and Dying as a Muslim"^^xsd:string ;
@@ -2635,7 +2674,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-31 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran2-250 ;
     :duaArabicText "رَبَّنَآ اَفْرِغْ عَلَيْنَا صَبْرًا وَّ ثَبِّتْ اَقْدَامَنَا وَانْصُرْنَا عَلَی الْقَوْمِ الْكَافِرِيْنَ"^^xsd:string ;
     :duaEnglishText "Our Lord, pour upon us patience and plant firmly our feet and give us victory over the disbelieving people."^^xsd:string ;
     :duaEnglishTitle "Asking for Patience and and Steadfastness"^^xsd:string ;
@@ -2656,7 +2694,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-33 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-8 ;
     :duaArabicText "رَبَّنَا لَا تُزِغْ قُلُوْبَنَا بَعْدَ اِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَّدُنْكَ رَحْمَةً  ۚ اِنَّكَ اَنْتَ الْوَهَّابُ"^^xsd:string ;
     :duaEnglishText "Our Lord, let not our hearts deviate after You have guided us and grant us from Yourself mercy. Indeed, You are the Bestower."^^xsd:string ;
     :duaEnglishTitle "Seeking Refuge from going Astray"^^xsd:string ;
@@ -2667,7 +2704,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-34 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-16 ;
     :duaArabicText "رَبَّنَآ  اِنَّنَآ اٰمَنَّا فَاغْفِرْلَنَا ذُنُوْبَنَا وَقِنَا عَذَابَ النَّارِ"^^xsd:string ;
     :duaEnglishText "Our Lord, indeed we have believed, so forgive us our sins and protect us from the punishment of the Fire."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness"^^xsd:string ;
@@ -2678,7 +2714,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-35 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran7-23 ;
     :duaArabicText "رَبَّنَا ظَلَمْنَآ اَنْفُسَنَا وَاِنْ لَّمْ تَغْفِرْلَنَا وَتَرْحَمْنَا لَنَكُوْنَنَّ مِنَ الْخَاسِرِيْنَ"^^xsd:string ;
     :duaEnglishText "Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers."^^xsd:string ;
     :duaEnglishTitle "Seeking Allah's Forgiveness and Mercy"^^xsd:string ;
@@ -2689,7 +2724,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-36 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-147 ;
     :duaArabicText "رَبَّنَا اغْفِرْلَنَا ذُنُوْبَنَا وَاِسْرَافَنَا فِیْ اَمْرِنَا وَثَبِّتْ اَقْدَامَنَا وَانْصُرْنَا عَلَی الْقَوْمِ الْكَافِرِيْنَ"^^xsd:string ;
     :duaEnglishText "Our Lord, forgive us our sins and the excess [committed] in our affairs and plant firmly our feet and give us victory over the disbelieving people."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness"^^xsd:string ;
@@ -2700,7 +2734,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-37 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran59-10 ;
     :duaArabicText "رَبَّنَا اغْفِرْلَنَا وَلِاِخْوَانِنَا الَّذِيْنَ سَبَقُوْنَا بِالْاِيْمَانِ وَلَا تَجْعَلْ فِیْ قُلُوْبِنَا غِلاًّ لِّلَّذِيْنَ اٰمَنُوْا رَبَّنَآ اِنَّكَ رَءُوفٌ رَّحِيْم"^^xsd:string ;
     :duaEnglishText "Our Lord, forgive us and our brothers who preceded us in faith and put not in our hearts [any] resentment toward those who have believed. Our Lord, indeed You are Kind and Merciful."^^xsd:string ;
     :duaEnglishTitle "Asking for Forgiveness and Seeking Refuge from Hatred"^^xsd:string ;
@@ -2711,7 +2744,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-38 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-193 ;
     :duaArabicText "رَبَّنَآ اِنَّنَا سَمِعْنَا مُنَادِیًا یُّنَادِیْ لِلْاِیْمَانِ اَنْ اٰمِنُوْا بِرَبِّكُمْ فَاٰمَنَّا  ۖ رَبَّنَا فَاغْفِرْلَنَا ذُنُوْبَنَا وَكَفِّرْ عَنَّا سَیِّاٰتِنَا وَتَوَفَّنَا مَعَ الْاَبْرَارِ"^^xsd:string ;
     :duaEnglishText "Our Lord, indeed we have heard a caller calling to faith, [saying], 'Believe in your Lord,' and we have believed. Our Lord, so forgive us our sins and remove from us our misdeeds and cause us to die with the righteous."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness"^^xsd:string ;
@@ -2722,7 +2754,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-39 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-194 ;
     :duaArabicText "رَبَّنَا وَاٰتِنَا مَا وَعَدْتَّنَا عَلَی رُسُلِكَ وَلَا تُخْزِنَا یَوْمَ الْقِيَامَةِ  ۗ اِنَّكَ لَا تُخْلِفُ الْمِیْعَادَ"^^xsd:string ;
     :duaEnglishText "Our Lord, and grant us what You promised us through Your messengers and do not disgrace us on the Day of Resurrection. Indeed, You do not fail in [Your] promise."^^xsd:string ;
     :duaEnglishTitle "Seeking Refuge from the Humiliation of the Hereafter"^^xsd:string ;
@@ -2733,8 +2764,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-40 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran25-65,
-        ns1:quran25-66 ;
     :duaArabicText "رَبَّنَا اصْرِفْ عَنَّاعَذَابَ جَهَنَّمَ  ۗ اِنَّ عَذَابَهَا كَانَ غَرَامًا ۝ اِنَّها سَاءَتْ  مُسْتَقَرًّا وَّ مُقَامًا ۝"^^xsd:string ;
     :duaEnglishText "Our Lord, avert from us the punishment of Hell. Indeed, its punishment is ever adhering. Indeed, it is evil as a settlement and residence."^^xsd:string ;
     :duaEnglishTitle "Seeking Refuge from Hell"^^xsd:string ;
@@ -2745,8 +2774,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-41 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-191,
-        ns1:quran3-192 ;
     :duaArabicText "رَبَّنَا مَا خَلَقْتَ هٰذَا بَاطِلًا  ۚ سُبْحٰنَكَ فَقِنَا عَذَابَ النَّارِ ۝ رَبَّنَآ اِنَّكَ مَنْ تُدْخِلِ النَّارَ فَقَدْ اَخْزَیْتَهُ  ۖوَمَا لِلظَّالِمِينَ  مِنْ اَنْصَارٍ"^^xsd:string ;
     :duaEnglishText "Our Lord, You did not create this aimlessly; exalted are You [above such a thing]; then protect us from the punishment of the Fire. Our Lord, indeed whoever You admit to the Fire - You have disgraced him, and for the wrongdoers there are no helpers."^^xsd:string ;
     :duaEnglishTitle "Seeking Refuge from Hell"^^xsd:string ;
@@ -2767,7 +2794,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-43 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran2-286 ;
     :duaArabicText "رَبَّنَا لَا تُؤَاخِذْنَآ اِنْ نَّسِيْنَآ اَوْ اَخْطَاْنَا ۚرَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ اِصْرًا كَمَا حَمَلْتَهُ عَلَی الَّذِيْنَ مِنْ قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَالَا طَاقَةَ لَنَا بِهِ  ۖ وَاعْفُ عَنَّا وَاغفِرْلَنَا وَارْحَمْنَا ۚ اَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَی الْقَوْمِ الْكَافِرِيْنَ ۝"^^xsd:string ;
     :duaEnglishText "Our Lord, do not impose blame upon us if we have forgotten or erred. Our Lord, and lay not upon us a burden like that which You laid upon those before us. Our Lord, and burden us not with that which we have no ability to bear. And pardon us; and forgive us; and have mercy upon us. You are our protector, so give us victory over the disbelieving people."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness for Sins committed in Ignorance"^^xsd:string ;
@@ -2778,7 +2804,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-44 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran2-67 ;
     :duaArabicText "اَعُوْذُ بِاللهِ اَنْ اَكُوْنَ مِنَ الْجَاهِلِیْنَ"^^xsd:string ;
     :duaEnglishText "I seek refuge in Allah from being among the ignorant."^^xsd:string ;
     :duaEnglishTitle "Seeking Refuge from Adapting Ignorant Attitude"^^xsd:string ;
@@ -2819,7 +2844,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-48 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran9-129 ;
     :duaArabicText "حَسْبِیَ اللهُ لَآ اِلَهَ  اِلَّا هُوَ  عَلَیْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِیْمِ"^^xsd:string ;
     :duaEnglishText "Sufficient for me is Allah ; there is no deity except Him. On Him I have relied, and He is the Lord of the Great Throne."^^xsd:string ;
     :duaEnglishTitle "Asking Allah, the Rabb of the Throne"^^xsd:string ;
@@ -2840,8 +2864,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-50 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran3-26,
-        ns1:quran3-27 ;
     :duaArabicText "اَللّٰهُمَّ مَالِكَ الْمُلْكِ تُؤْتِی الْمُلْكَ مَنْ تَشَآءُ وَتَنْزِعُ الْمُلْكَ مِمَّنْ تَشَآءُ وَتُعِزُّ مَنْ تَشَآءُ وَتُذِلُّ مَنْ تَشَآءُ بِیَدِكَ الْخَیْرُ  ۖ  اِنَّكَ عَلَي كُلِّ شَیْئٍ قَدِیْر ۝ تُوْلِجُ الَّیْلَ فِی النَّهَارِ وَتُوْلِجُ النَّهَارَ فِی الَّيْلِ  وَتُخْرِجُ الْحَیَّ مِنَ الْمَیِّتِ وَتُخْرِجُ الْمَیِّتَ مِنَ الْحَیِّ وَتَرْزُقُ مَنْ تَشَآءُ بِغَیْرِ حِسَابٍ ۝"^^xsd:string ;
     :duaEnglishText "O Allah, Owner of Sovereignty, You give sovereignty to whom You will and You take sovereignty away from whom You will. You honor whom You will and You humble whom You will. In Your hand is [all] good. Indeed, You are over all things competent. You cause the night to enter the day, and You cause the day to enter the night; and You bring the living out of the dead, and You bring the dead out of the living. And You give provision to whom You will without account."^^xsd:string ;
     :duaEnglishTitle "Seeking Goodness from Allah, the King"^^xsd:string ;
@@ -2852,7 +2874,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-51 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran14-41 ;
     :duaArabicText "رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ"^^xsd:string ;
     :duaEnglishText "O Our Lord, forgive me and my parents and the believers on the day of reckoning"^^xsd:string ;
     :duaEnglishTitle "Supplication of Ibrahim AS"^^xsd:string ;
@@ -2863,7 +2884,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-52 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran28-16 ;
     :duaArabicText "رَبِّ إِنِّي ظَلَمْتُ نَفْسِي فَاغْفِرْلِي"^^xsd:string ;
     :duaEnglishText "My Rabb, I have wronged myself so forgive me."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness"^^xsd:string ;
@@ -2874,7 +2894,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-53 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran23-109 ;
     :duaArabicText "رَبَّنَا آمَنَّا فَاغْفِرْ لَنَا وَارْحَمْنَا وَأَنْتَ خَيْرُ الرَّاحِمِينَ"^^xsd:string ;
     :duaEnglishText "Our Rabb, we have believed, so forgive us and have mercy upon us, and You are the best of the merciful."^^xsd:string ;
     :duaEnglishTitle "Seeking Forgiveness"^^xsd:string ;
@@ -2895,7 +2914,6 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
 
 :Dua-QuranicDua-55 a :Dua,
         :QuranicDua ;
-    ns1:IsPartOf ns1:quran14-41 ;
     :duaArabicText "رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ"^^xsd:string ;
     :duaEnglishText "Our Lord! Forgive me, my parents, and the believers on the Day when the judgment will come to pass."^^xsd:string ;
     :duaEnglishTitle "Supplicating to Allah while Remembering Akhirah"^^xsd:string ;
@@ -2904,169 +2922,41 @@ Supplication After Fajr Ṣalah (Once)"""^^xsd:string ;
     :duaUrduText "اے ہمارے رب! مجھے بھی بخش دے اور میرے ماں باپ کو بھی اور ایمان والوں کو بھی ، جس دن حساب قائم ہوگا"^^xsd:string ;
     :duaUrduTitle "میدان حشر کو ذہن میں رکھتے ہوئے دعا کرنا"^^xsd:string .
 
+:duaType a owl:DatatypeProperty ;
+    rdfs:comment "@en or @ur" ;
+    rdfs:domain :Dua ;
+    rdfs:range xsd:string .
+
 owl:SameAs a owl:DatatypeProperty ;
-    rdfs:domain ns1:Verse ;
+    rdfs:domain <http://quranontology.com/Resource/Verse> ;
     rdfs:range xsd:string .
 
 owl:equivalentClass a owl:DatatypeProperty .
 
-ns1:ChapterIndex a owl:DatatypeProperty,
+<http://quranontology.com/Resource/ChapterIndex> a owl:DatatypeProperty,
         owl:FunctionalProperty ;
-    rdfs:domain ns1:Chapter ;
+    rdfs:domain <http://quranontology.com/Resource/Chapter> ;
     rdfs:range xsd:nonNegativeInteger .
 
-ns1:DisplayText a owl:DatatypeProperty ;
-    rdfs:domain ns1:Verse ;
-    rdfs:range xsd:string .
-
-ns1:Prophet a owl:Class ;
+<http://quranontology.com/Resource/Prophet> a owl:Class ;
     rdfs:subClassOf <http://schema.org/Person> ;
     owl:equivalentClass [ a owl:Restriction ;
             owl:onProperty rdfs:label ;
             owl:someValuesFrom xsd:string ] .
 
-ns1:VerseAbsoluteIndex a owl:DatatypeProperty,
+<http://quranontology.com/Resource/VerseIndex> a owl:DatatypeProperty,
         owl:FunctionalProperty ;
-    rdfs:domain ns1:Verse ;
+    rdfs:domain <http://quranontology.com/Resource/Verse> ;
     rdfs:range xsd:nonNegativeInteger .
 
-ns1:VerseIndex a owl:DatatypeProperty,
-        owl:FunctionalProperty ;
-    rdfs:domain ns1:Verse ;
-    rdfs:range xsd:nonNegativeInteger .
-
-ns1:quran14 rdfs:label "ابراهيم"@ar .
-
-ns1:quran17-24 ns1:IsPartOf ns1:quran17 .
-
-ns1:quran17-80 ns1:IsPartOf ns1:quran17 .
-
-ns1:quran2-201 ns1:IsPartOf ns1:quran2 .
-
-ns1:quran2-250 ns1:IsPartOf ns1:quran2 .
-
-ns1:quran2-286 ns1:IsPartOf ns1:quran2 .
-
-ns1:quran2-67 ns1:IsPartOf ns1:quran2 .
-
-ns1:quran23-109 ns1:IsPartOf ns1:quran23 .
-
-ns1:quran23-118 ns1:IsPartOf ns1:quran23 .
-
-ns1:quran23-29 ns1:IsPartOf ns1:quran23 .
-
-ns1:quran23-97 ns1:IsPartOf ns1:quran23 .
-
-ns1:quran23-98 ns1:IsPartOf ns1:quran23 .
-
-ns1:quran25-65 ns1:IsPartOf ns1:quran25 .
-
-ns1:quran25-66 ns1:IsPartOf ns1:quran25 .
-
-ns1:quran25-74 ns1:IsPartOf ns1:quran25 .
-
-ns1:quran27 rdfs:label "النمل"@ar .
-
-ns1:quran27-19 ns1:IsPartOf ns1:quran27 .
-
-ns1:quran28-16 ns1:IsPartOf ns1:quran28 .
-
-ns1:quran28-24 ns1:IsPartOf ns1:quran28 .
-
-ns1:quran3-147 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-16 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-191 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-192 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-193 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-194 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-26 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-27 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran3-8 ns1:IsPartOf ns1:quran3 .
-
-ns1:quran46 rdfs:label "الأحقاف"@ar .
-
-ns1:quran46-15 ns1:IsPartOf ns1:quran46 .
-
-ns1:quran59 rdfs:label "الحشر"@ar .
-
-ns1:quran59-10 ns1:IsPartOf ns1:quran59 .
-
-ns1:quran60 rdfs:label "الممتحنة"@ar .
-
-ns1:quran60-4 ns1:IsPartOf ns1:quran60 .
-
-ns1:quran7-126 ns1:IsPartOf ns1:quran7 .
-
-ns1:quran7-23 ns1:IsPartOf ns1:quran7 .
-
-ns1:quran9 rdfs:label "التوبة"@ar .
-
-ns1:quran9-129 ns1:IsPartOf ns1:quran9 .
-
-<http://schema.org/author> a owl:ObjectProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
-    rdfs:range <http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> .
-
-<http://www.i-knex.com/ontology/hadith#HadithNarrator> a owl:Class ;
-    rdfs:subClassOf <http://schema.org/Person> ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#name> ;
-            owl:someValuesFrom xsd:string ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#narratorID> ;
-            owl:someValuesFrom xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#narratorURL> ;
-            owl:someValuesFrom xsd:anyURI ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#popularName> ;
-            owl:someValuesFrom xsd:string ] .
+<http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> a owl:Class ;
+    rdfs:subClassOf <http://schema.org/Person> .
 
 <http://www.i-knex.com/ontology/hadith#collectionName> a owl:DatatypeProperty ;
     rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
     rdfs:range xsd:string .
 
-<http://www.i-knex.com/ontology/hadith#engBookNo> a owl:DatatypeProperty .
-
-<http://www.i-knex.com/ontology/hadith#engVolNo> a owl:DatatypeProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
-    rdfs:range xsd:nonNegativeInteger .
-
-<http://www.i-knex.com/ontology/hadith#fullHadithText> a owl:DatatypeProperty,
-        owl:FunctionalProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
-    rdfs:range xsd:string .
-
-<http://www.i-knex.com/ontology/hadith#hadithBookIntro> a owl:DatatypeProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
-    rdfs:range xsd:string .
-
-<http://www.i-knex.com/ontology/hadith#hadithBookNo> a owl:DatatypeProperty .
-
-<http://www.i-knex.com/ontology/hadith#hadithReferenceNo> a owl:DatatypeProperty,
-        owl:FunctionalProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
-    rdfs:range rdfs:Literal,
-        xsd:nonNegativeInteger,
-        xsd:string .
-
 <http://www.i-knex.com/ontology/hadith#hadithText> a owl:DatatypeProperty .
-
-<http://www.i-knex.com/ontology/hadith#hasHadithText> a owl:ObjectProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
-    rdfs:range <http://www.i-knex.com/ontology/hadith#HadithText> .
-
-<http://www.i-knex.com/ontology/hadith#hasNarratorChain> a owl:ObjectProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
-    rdfs:range <http://www.i-knex.com/ontology/hadith#NarratorChain> .
 
 <http://www.i-knex.com/ontology/hadith#hasRootNarratorSegment> a owl:ObjectProperty ;
     rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChain> ;
@@ -3088,18 +2978,16 @@ ns1:quran9-129 ns1:IsPartOf ns1:quran9 .
 
 <http://www.i-knex.com/ontology/hadith#isPartOfHadith> a owl:ObjectProperty ;
     rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithText>,
+        <http://www.i-knex.com/ontology/hadith#NarratorChain>,
         :HadithDua ;
     rdfs:range <http://www.i-knex.com/ontology/hadith#Hadith> .
 
-<http://www.i-knex.com/ontology/hadith#name> a owl:DatatypeProperty .
-
 <http://www.i-knex.com/ontology/hadith#narratorChain> a owl:DatatypeProperty .
 
-<http://www.i-knex.com/ontology/hadith#narratorID> a owl:DatatypeProperty .
-
-<http://www.i-knex.com/ontology/hadith#narratorURL> a owl:DatatypeProperty .
-
-<http://www.i-knex.com/ontology/hadith#popularName> a owl:DatatypeProperty .
+<http://www.i-knex.com/ontology/hadith#refersToNarrator> a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> ;
+    rdfs:range <http://www.i-knex.com/ontology/hadith#HadithNarrator> .
 
 :duaArabicText a owl:DatatypeProperty,
         owl:FunctionalProperty ;
@@ -3148,71 +3036,11 @@ rdfs:label a owl:DatatypeProperty ;
     rdfs:domain [ a owl:Class ] ;
     rdfs:range xsd:string .
 
-ns1:AfterlifeLocation a owl:Class ;
-    rdfs:subClassOf ns1:Location .
+<http://quranontology.com/Resource/AfterlifeLocation> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/Location> .
 
-ns1:quran14-41 ns1:IsPartOf ns1:quran14 .
-
-ns1:quran17 rdfs:label "الإسراء"@ar .
-
-ns1:quran28 rdfs:label "القصص"@ar .
-
-ns1:quran7 rdfs:label "الأعراف"@ar .
-
-<http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> a owl:Class ;
+<http://www.i-knex.com/ontology/hadith#HadithNarrator> a owl:Class ;
     rdfs:subClassOf <http://schema.org/Person> .
-
-<http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment> a owl:Class ;
-    rdfs:subClassOf <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:maxQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
-            owl:onDataRange xsd:string ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#heardFrom> ] .
-
-:duaType a owl:DatatypeProperty ;
-    rdfs:comment "@en or @ur" ;
-    rdfs:domain :Dua ;
-    rdfs:range xsd:string .
-
-ns1:Chapter a owl:Class ;
-    owl:disjointWith ns1:Verse ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onDataRange xsd:nonNegativeInteger ;
-            owl:onProperty ns1:ChapterIndex ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
-
-ns1:quran25 rdfs:label "الفرقان"@ar .
-
-<http://schema.org/Person> a owl:Class .
-
-<http://www.i-knex.com/ontology/hadith#HadithBook> a owl:Class ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfCollection> ;
-            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithCollection> ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#engBookNo> ;
-            owl:someValuesFrom xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithBookIntro> ;
-            owl:someValuesFrom xsd:string ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithBookNo> ;
-            owl:someValuesFrom xsd:nonNegativeInteger ] .
-
-<http://www.i-knex.com/ontology/hadith#HadithChapter> a owl:Class ;
-    owl:equivalentClass [ a owl:Class ;
-            owl:unionOf ( [ a owl:Restriction ;
-                        owl:cardinality "1"^^xsd:nonNegativeInteger ;
-                        owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithChapterNo> ] [ a owl:Restriction ;
-                        owl:onDataRange xsd:nonNegativeInteger ;
-                        owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithChapterNo> ;
-                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] [ a owl:Restriction ;
-                        owl:onDataRange xsd:string ;
-                        owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithChapterNo> ;
-                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] ) ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfBook> ;
-            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithBook> ] .
 
 <http://www.i-knex.com/ontology/hadith#HadithText> a owl:Class ;
     owl:equivalentClass [ a owl:Restriction ;
@@ -3222,12 +3050,37 @@ ns1:quran25 rdfs:label "الفرقان"@ar .
             owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithText> ;
             owl:someValuesFrom xsd:string ] .
 
-<http://www.i-knex.com/ontology/hadith#NarratorChainSegment> a owl:Class .
+<http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment> a owl:Class ;
+    rdfs:subClassOf <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:string ;
+            owl:onProperty <http://www.i-knex.com/ontology/hadith#heardFrom> ] .
 
-<http://www.i-knex.com/ontology/hadith#hadithChapterNo> a owl:DatatypeProperty ;
-    rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
-    rdfs:range [ a rdfs:Datatype ;
-            owl:unionOf ( rdfs:Literal xsd:nonNegativeInteger xsd:string ) ] .
+<http://quranontology.com/Resource/Chapter> a owl:Class ;
+    owl:disjointWith <http://quranontology.com/Resource/Verse> ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onDataRange xsd:nonNegativeInteger ;
+            owl:onProperty <http://quranontology.com/Resource/ChapterIndex> ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
+
+<http://schema.org/Person> a owl:Class .
+
+<http://www.i-knex.com/ontology/hadith#HadithBook> a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfCollection> ;
+            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithCollection> ] .
+
+<http://www.i-knex.com/ontology/hadith#HadithChapter> a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfBook> ;
+            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithBook> ] .
+
+<http://www.i-knex.com/ontology/hadith#NarratorChainSegment> a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onClass <http://www.i-knex.com/ontology/hadith#HadithNarrator> ;
+            owl:onProperty <http://www.i-knex.com/ontology/hadith#refersToNarrator> ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
 
 <http://www.semanticweb.org/szm/dua-ontology/DuaCategory> a owl:Class ;
     owl:equivalentClass [ a owl:Restriction ;
@@ -3243,80 +3096,41 @@ ns1:quran25 rdfs:label "الفرقان"@ar .
             owl:onProperty <http://www.semanticweb.org/szm/dua-ontology/categoryUrduTitle> ;
             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
 
-ns1:quran2 rdfs:label "البقرة"@ar .
-
 <http://www.i-knex.com/ontology/hadith#NarratorChain> a owl:Class ;
     owl:equivalentClass [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#narratorChain> ;
-            owl:someValuesFrom xsd:string ] .
-
-ns1:GeographicalLocation a owl:Class ;
-    rdfs:subClassOf ns1:Location .
-
-ns1:Location a owl:Class .
-
-ns1:quran23 rdfs:label "المؤمنون"@ar .
-
-<http://www.i-knex.com/ontology/hadith#HadithCollection> a owl:Class ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onProperty <http://schema.org/author> ;
-            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#collectionName> ;
-            owl:someValuesFrom xsd:string ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#engVolNo> ;
-            owl:someValuesFrom xsd:nonNegativeInteger ] .
-
-ns1:Verse a owl:Class ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onProperty ns1:DisplayText ;
-            owl:someValuesFrom xsd:string ],
-        [ a owl:Restriction ;
-            owl:onDataRange xsd:nonNegativeInteger ;
-            owl:onProperty ns1:VerseAbsoluteIndex ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onDataRange xsd:nonNegativeInteger ;
-            owl:onProperty ns1:VerseIndex ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
-
-ns1:quran3 rdfs:label "آل عمران"@ar .
-
-<http://www.i-knex.com/ontology/hadith#Hadith> a owl:Class ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#hasHadithText> ;
-            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithText> ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#hasNarratorChain> ;
-            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#NarratorChain> ],
-        [ a owl:Restriction ;
             owl:onProperty <http://www.i-knex.com/ontology/hadith#hasRootNarratorSegment> ;
             owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment> ],
         [ a owl:Restriction ;
+            owl:onProperty <http://www.i-knex.com/ontology/hadith#narratorChain> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://quranontology.com/Resource/GeographicalLocation> a owl:Class ;
+    rdfs:subClassOf <http://quranontology.com/Resource/Location> .
+
+<http://quranontology.com/Resource/Location> a owl:Class .
+
+<http://www.i-knex.com/ontology/hadith#HadithCollection> a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onProperty <http://www.i-knex.com/ontology/hadith#collectionName> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://quranontology.com/Resource/Verse> a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
+            owl:onDataRange xsd:nonNegativeInteger ;
+            owl:onProperty <http://quranontology.com/Resource/VerseIndex> ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
+
+<http://www.i-knex.com/ontology/hadith#Hadith> a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
             owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfChapter> ;
-            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithChapter> ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#fullHadithText> ;
-            owl:someValuesFrom xsd:string ],
-        [ a owl:Restriction ;
-            owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithReferenceNo> ;
-            owl:someValuesFrom rdfs:Literal ] .
+            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithChapter> ] .
 
 :QuranicDua a owl:Class ;
-    rdfs:subClassOf :Dua ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:onDataRange xsd:string ;
-            owl:onProperty :duaType ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
+    rdfs:subClassOf :Dua .
 
 :HadithDua a owl:Class ;
     rdfs:subClassOf :Dua ;
-    owl:disjointWith :QuranicDua ;
-    owl:equivalentClass [ a owl:Restriction ;
-            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onDataRange xsd:string ;
-            owl:onProperty :duaType ] .
+    owl:disjointWith :QuranicDua .
 
 :Dua a owl:Class ;
     owl:equivalentClass [ a owl:Restriction ;
@@ -3338,4 +3152,3 @@ ns1:quran3 rdfs:label "آل عمران"@ar .
             owl:onDataRange xsd:nonNegativeInteger ;
             owl:onProperty :duaId ;
             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] .
-
