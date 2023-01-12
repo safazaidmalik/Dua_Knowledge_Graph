@@ -14,16 +14,16 @@ import pyarabic.araby as araby
 import pyarabic.number as number
 from pyarabic.araby import strip_harakat, strip_tashkeel, strip_tatweel, normalize_hamza, tokenize, sentence_tokenize, is_arabicrange
 
-# g_Hadith = Graph()
-# g_Hadith.parse('SemanticHadithKG.ttl', format = 'turtle')
-# hn = Namespace('http://www.i-knex.com/ontology/hadith#')
+g_Hadith = Graph()
+g_Hadith.parse('SemanticHadithKG.ttl', format = 'turtle')
+hn = Namespace('http://www.i-knex.com/ontology/hadith#')
 
 g_Quran = Graph()
 g_Quran.parse('quran_data_full.ttl', format = 'turtle')
 qn = Namespace ('http://quranontology.com/Resource/')
 
 g = Graph()
-g.parse('dua_ontology_final_copy.ttl', format = 'turtle')
+g.parse('dua_ontology_scehma.ttl', format = 'turtle')
 n = Namespace('http://www.semanticweb.org/szm/dua-ontology#')
 
 # def normalize_arabic(text):
@@ -213,11 +213,48 @@ q_surah_lis = [
 ['الناس',"Mankind"]
 
 ]
+
+def find_add_hadith_ref(h_dua, hadith_IRI):
+  qres = g_Hadith.query(
+    """
+    PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX hVoc:<http://www.i-knex.com/ontology/hadith#>
+    PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    SELECT ?hadith ?hChap ?hBook ?hCollect ?hCollectName WHERE
+    {
+      ?hadith a hVoc:Hadith.
+      ?hadith hVoc:isPartOfChapter ?hChap.
+      ?hChap hVoc:isPartOfBook ?hBook.
+      ?hBook hVoc:isPartOfCollection ?hCollect.
+      ?hCollect hVoc:collectionName ?hCollectName.
+    }
+    """
+  )
+
+  for row in qres:
+    if row.hadith.toPython() == hadith_IRI:
+      g.add((h_dua, hn.isPartOfHadith, row.hadith))
+      g.add((row.hadith, hn.isPartOfChapter, row.hChap))
+      g.add((row.Chap, hn.isPartOfBook, row.hBook))
+      g.add((row.hBook, hn.isPartOfCollection, row.hCollect))
+      g.add((row.hCollect, hn.collectionName, row.hCollectName))
+      
+      print("Linked dua: ", h_dua.toPython())
+      # print(row.hadith.toPython(), type(row.hadith.toPython()))
+
+
+      # if row.hadith.toPython() == verse_index:
+      #   if row.chapName.toPython() == norm_surah_name or row.chapName.toPython() == orig_surah_name:
+      #     g.add((row.verse, qn.IsPartOf, row.chapter))
+      #     g.add((row.chapter, RDFS.label, row.chapName))
+      #     g.add((q_dua, qn.IsPartOf, row.verse))
+
+          # print("Added triple: ", q_dua, qn.IsPartOf, row.verse)
+
+
 def find_add_quran_ref(q_dua, surah_index, complete_ref, norm_surah_name, orig_surah_name):
 
-  chapter_index = Literal(surah_index, datatype = XSD.nonNegativeInteger)
   verse_index = int(re.sub('[^0-9]+', '', complete_ref))
-  verse_index_lit = Literal(verse_index, datatype = XSD.nonNegativeInteger)
   # print("Verse index = ", verse_index)
   # verse_index = Literal(verse_index, datatype = XSD.nonNegativeInteger)
   
@@ -274,32 +311,29 @@ def find_add_quran_ref(q_dua, surah_index, complete_ref, norm_surah_name, orig_s
     PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
     PREFIX qo:<http://quranontology.com/Resource/>
     PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    SELECT ?verse ?chapter ?vIndex ?chapName WHERE
+    SELECT ?verse ?chapter ?vIndex ?chapIndex ?chapName WHERE
     {
       ?verse a qo:Verse.
       ?verse qo:VerseIndex ?vIndex.
       ?verse qo:IsPartOf ?chapter.
+      ?chapter qo:ChpaterIndex ?chapIndex.
       ?chapter rdfs:label ?chapName. 
     }
     """
   )
 
-  # print("Verses with verse index = ", verse_index, "are: \n")
-  # print("Result: \n")
   itr = 0
   for row in qres:
     # print(row)
     if row.vIndex.toPython() == verse_index:
-      # print("found same veres index = ", verse_index)
       if row.chapName.toPython() == norm_surah_name or row.chapName.toPython() == orig_surah_name:
-        # print("found suran name = ", surah_name)
-
         g.add((row.verse, qn.IsPartOf, row.chapter))
         g.add((row.chapter, RDFS.label, row.chapName))
-        g.add((dua, qn.IsPartOf, row.verse))
+        g.add((row.chapter, qn.ChapterIndex, row.chapIndex))
+        g.add((q_dua, qn.IsPartOf, row.verse))
 
-        print("Added triple: ", dua, qn.IsPartOf, row.verse)
-        # g.add(())
+        print("Added triple: ", q_dua, qn.IsPartOf, row.verse)
+
 
 
 ##############################################################
@@ -379,120 +413,138 @@ def find_add_quran_ref(q_dua, surah_index, complete_ref, norm_surah_name, orig_s
   # return surah_resource
 ##############################################################
 
+# Hadith linking
+##############################################################
 
-# Make categories first: Read dua_category_map-v80.csv
-with open('Duaein Data - For KG - revisedCategories-v57.csv', 'r') as file:
-  csvreader = csv.DictReader(file)
-  # print(csvreader)
+# def link_hadith_duas(file_name):
+#   # for all ahadith found in Sahih Bukhari, link hadith dua to it
+#   with open(file_name, 'r') as file:
+#     csvreader = csv.DictReader(file)
+#     for row in csvreader:
+#         if row["Dua_IRI"]:
+#           print("dua", row["dua_id"], " belongs to:", row["Dua_IRI"])
+#           find_add_hadith_ref()
+#           # dua = URIRef(str(n)+"Dua-"+str(row["duaId"])) 
+#           # g.add((dua, RDF.type, n.HadithDua))
 
+
+
+#         # means Sahih Bukahri hadith is present
+#           continue
+
+        
+
+
+
+##############################################################
+
+
+
+
+# Quran linking
+##############################################################
+
+def add_Categories(file_name):
+  # Make categories first: Read dua_category_map-v80.csv
+  with open(file_name, 'r') as file:
+    csvreader = csv.DictReader(file)
+    # print(csvreader)
+
+    count = 0
+    for row in csvreader:
+      cat = URIRef(str(n)+ "Category-"+str(row["category"]))
+      g.add((cat, RDF.type, n.Category))
+      
+      g.add((cat, n.categoryId, Literal(row["id"], datatype=XSD.nonNegativeInteger)))
+      g.add((cat, n.categoryUrduTitle, Literal(row["title_ur"], datatype = XSD.string)))
+      g.add((cat, n.categoryEnglishTitle, Literal(row["title_en"], datatype = XSD.string)))
+
+def add_duas(file_name):
   count = 0
-  for row in csvreader:
-    cat = URIRef(str(n)+ "Category-"+str(row["category"]))
-    g.add((cat, RDF.type, n.Category))
-    
-    g.add((cat, n.categoryId, Literal(row["id"], datatype=XSD.nonNegativeInteger)))
-    g.add((cat, n.categoryUrduTitle, Literal(row["title_ur"], datatype = XSD.string)))
-    g.add((cat, n.categoryEnglishTitle, Literal(row["title_en"], datatype = XSD.string)))
+  with open(file_name, 'r') as file:
+    csvreader = csv.DictReader(file)
+    with open('dua_modified.csv', 'r') as file2:
+      csvreader2 = csv.DictReader(file2)
+      for row in csvreader:
+        if row["duaArabic"] != "Sample":
+            dua = URIRef(str(n)+"Dua-"+str(row["duaId"]))
+            g.add((dua, RDF.type, n.Dua))
 
-count = 0
-with open('Duaein Data - For KG - duas-test-v80.csv', 'r') as file:
-  csvreader = csv.DictReader(file)
-  fil_len = 0
-  for row in csvreader:
-    if row["duaArabic"] != "Sample":
-        dua = URIRef(str(n)+"Dua-"+str(row["duaId"]))
-        g.add((dua, RDF.type, n.Dua))
-
-        g.add((dua, n.duaId, Literal(row["dua_id"], datatype = XSD.nonNegativeInteger)))
-        g.add((dua, n.duaUrduTitle, Literal(row["duaTitle_ur"], datatype = XSD.string)))
-        g.add((dua, n.duaEnglishTitle, Literal(row["duaTitle_en"], datatype = XSD.string)))
-        
-        g.add((dua, n.duaArabicText, Literal(row["duaArabic"], datatype = XSD.string)))
-        g.add((dua, n.duaEnglishText, Literal(row["dua_en"], datatype = XSD.string)))
-        g.add((dua, n.duaUrduText, Literal(row["dua_ur"], datatype = XSD.string)))
-
-        if row["duaType_en"] == "Qurani Dua":
-            g.add((dua, RDF.type, n.QuranicDua))
-            g.add((dua, n.duaType, Literal("Qurani Dua", datatype = XSD.string)))
+            g.add((dua, n.duaId, Literal(row["dua_id"], datatype = XSD.nonNegativeInteger)))
+            g.add((dua, n.duaUrduTitle, Literal(row["duaTitle_ur"], datatype = XSD.string)))
+            g.add((dua, n.duaEnglishTitle, Literal(row["duaTitle_en"], datatype = XSD.string)))
             
-            surah_index = 1
-            for s in q_surah_lis:
-              if row["duaReference_ur"].find('-') == -1:
-              # not considering verse ranges for now
+            g.add((dua, n.duaArabicText, Literal(row["duaArabic"], datatype = XSD.string)))
+            g.add((dua, n.duaEnglishText, Literal(row["dua_en"], datatype = XSD.string)))
+            g.add((dua, n.duaUrduText, Literal(row["dua_ur"], datatype = XSD.string)))
 
-                tokenized_csv_ref = tokenize(row["duaReference_ur"], conditions=is_arabicrange, morphs=strip_tashkeel)
-                normalized_csv_ref = normalizeArabic(deNoise(row["duaReference_ur"]))
-                tokenized_surah = tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)
-                normalized_surah = normalizeArabic(deNoise(s[0]))                
-                csv_ref_arabic = re.sub('[0-9 ()]+', '', normalizeArabic(deNoise(row["duaReference_ur"])))
-                if normalized_csv_ref.find(normalized_surah) != -1 and abs(len(csv_ref_arabic)-len(normalized_surah)) <= 2:
-                  print("same")
-                  find_add_quran_ref(dua, surah_index, normalized_csv_ref, normalized_surah, s[0])
+            if row["duaType_en"] == "Qurani Dua":
+                g.add((dua, RDF.type, n.QuranicDua))
+                g.add((dua, n.duaType, Literal("Qurani Dua", datatype = XSD.string)))
+                
+                surah_index = 1
+                for s in q_surah_lis:
+                  if row["duaReference_ur"].find('-') == -1:
+                  # not considering verse ranges for now
 
-                  surah_index +=1
-                  count+=1
-              else:
-                # considering verse ranges now, but not commas
-                if row["duaReference_ur"].find(',') == -1:
+                    tokenized_csv_ref = tokenize(row["duaReference_ur"], conditions=is_arabicrange, morphs=strip_tashkeel)
+                    normalized_csv_ref = normalizeArabic(deNoise(row["duaReference_ur"]))
+                    tokenized_surah = tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)
+                    normalized_surah = normalizeArabic(deNoise(s[0]))                
+                    csv_ref_arabic = re.sub('[0-9 ()]+', '', normalizeArabic(deNoise(row["duaReference_ur"])))
+                    if normalized_csv_ref.find(normalized_surah) != -1 and abs(len(csv_ref_arabic)-len(normalized_surah)) <= 2:
+                      print("same")
+                      find_add_quran_ref(dua, surah_index, normalized_csv_ref, normalized_surah, s[0])
 
-                  tokenized_csv_ref = tokenize(row["duaReference_ur"], conditions=is_arabicrange, morphs=strip_tashkeel)
-                  normalized_csv_ref = normalizeArabic(deNoise(row["duaReference_ur"]))
-                  ref_verse_range =  re.sub('[^0-9\-]', '', normalized_csv_ref)
-                  verse_range_ends = ref_verse_range.split('-')
-                  for i in range(len(verse_range_ends)):
-                    verse_range_ends[i] = int(verse_range_ends[i])
-                  print("Verse range = ", verse_range_ends)
+                      surah_index +=1
+                      count+=1
+                  else:
+                    # considering verse ranges now, but not commas
+                    if row["duaReference_ur"].find(',') == -1:
 
-                  tokenized_surah = tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)
-                  normalized_surah = normalizeArabic(deNoise(s[0]))
-                  # if len(tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel))<=2 and normalizeArabic(deNoise(row["duaReference_ur"])).find(normalizeArabic(deNoise(s[0]))) == 0 and (len(tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)[0]) > len(normalizeArabic(deNoise(row["duaReference_ur"])))+1  or  len(tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)[0]) +1 < len(normalizeArabic(deNoise(row["duaReference_ur"])))+1):
-                  
-                  csv_ref_arabic = re.sub('[0-9 ()]+', '', normalizeArabic(deNoise(row["duaReference_ur"])))
-                  
-                  if normalized_csv_ref.find(normalized_surah) != -1 and abs(len(csv_ref_arabic)-len(normalized_surah)) <= 2:
-                    print("same")
-                    for v in verse_range_ends:
-                      pos = re.search(r"\d", normalized_csv_ref)
-                      print(pos.start())
-                      new_normalized_csv_ref = re.sub('[0123456789-]','',normalized_csv_ref)
-                      new_normalized_csv_ref = new_normalized_csv_ref[:pos.start()] + str(v) + new_normalized_csv_ref[pos.start():]
-                      print(new_normalized_csv_ref)
-                      find_add_quran_ref(dua, surah_index, new_normalized_csv_ref, normalized_surah, s[0])
-                  
-                  
-                  
+                      tokenized_csv_ref = tokenize(row["duaReference_ur"], conditions=is_arabicrange, morphs=strip_tashkeel)
+                      normalized_csv_ref = normalizeArabic(deNoise(row["duaReference_ur"]))
+                      ref_verse_range =  re.sub('[^0-9\-]', '', normalized_csv_ref)
+                      verse_range_ends = ref_verse_range.split('-')
+                      for i in range(len(verse_range_ends)):
+                        verse_range_ends[i] = int(verse_range_ends[i])
+                      # print("Verse range = ", verse_range_ends)
 
-
-                print()
-
-
-              #add Quran Reference
-
-# for a dua identified by duaId (row["dua_id"]), find which triple
-# has verse index and chapter name same as in dua["reference_ur"]
-
-
-
-        else:
-            g.add((dua, RDF.type, n.HadithDua))
-            g.add((dua, n.duaType, Literal(row["duaType_en"], datatype = XSD.string)))
-
-# search for quranic reference after strip_tashkeel while reading from csv in utf-8 and from quran ontology in utf-8
-        
-        
-
-            # print(normalizeArabic(deNoise(row["duaReference_ur"])))
-            # print(normalizeArabic(deNoise(s[0])))
-          # if normalizeArabic(deNoise(row["duaReference_ur"])).find(normalizeArabic(deNoise(s[0]))) == 0 and len(tokenize(normalizeArabic(deNoise(row["duaReference_ur"])), conditions=is_arabicrange, morphs=strip_tashkeel)) == len(s[0]):
-            # print(normalizeArabic(deNoise(row["duaReference_ur"])))
-            # print(s[0])
-            # print()
-    fil_len+=1
-  print("len of file = ", fil_len)
-print("Counts of found surahs = ", count)
+                      tokenized_surah = tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)
+                      normalized_surah = normalizeArabic(deNoise(s[0]))
+                      # if len(tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel))<=2 and normalizeArabic(deNoise(row["duaReference_ur"])).find(normalizeArabic(deNoise(s[0]))) == 0 and (len(tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)[0]) > len(normalizeArabic(deNoise(row["duaReference_ur"])))+1  or  len(tokenize(s[0], conditions=is_arabicrange, morphs=strip_tashkeel)[0]) +1 < len(normalizeArabic(deNoise(row["duaReference_ur"])))+1):
+                      
+                      csv_ref_arabic = re.sub('[0-9 ()]+', '', normalizeArabic(deNoise(row["duaReference_ur"])))
+                      
+                      if normalized_csv_ref.find(normalized_surah) != -1 and abs(len(csv_ref_arabic)-len(normalized_surah)) <= 2:
+                        print("same")
+                        for v in verse_range_ends:
+                          pos = re.search(r"\d", normalized_csv_ref)
+                          print(pos.start())
+                          new_normalized_csv_ref = re.sub('[0123456789-]','',normalized_csv_ref)
+                          new_normalized_csv_ref = new_normalized_csv_ref[:pos.start()] + str(v) + new_normalized_csv_ref[pos.start():]
+                          print(new_normalized_csv_ref)
+                          find_add_quran_ref(dua, surah_index, new_normalized_csv_ref, normalized_surah, s[0])
+            else:
+              g.add((dua, RDF.type, n.HadithDua))
+              g.add((dua, n.duaType, Literal(row["duaType_en"], datatype = XSD.string)))
+    
+              for row2 in csvreader2:
+                if row2["Dua_IRI"]:
+                # print("dua", row2["dua_id"], " belongs to:", row2["Dua_IRI"])
+                 find_add_hadith_ref(dua, row2["Dua_IRI"])
 
 
-g.serialize(destination='Populated_Dua_KG.ttl', format='turtle')
+  print("Counts of found surahs = ", count)
+####################################################################################
 
 
-# DuaCategory
+
+def main():
+  add_Categories('Duaein Data - For KG - revisedCategories-v57.csv')
+  add_duas('Duaein Data - For KG - duas-test-v80.csv')
+
+  g.serialize(destination='Populated_Dua_KG.ttl', format='turtle')
+
+
+main()
