@@ -1,0 +1,599 @@
+@prefix : <http://www.semanticweb.org/szm/dua-ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/szm/dua-ontology> .
+
+<http://www.semanticweb.org/szm/dua-ontology> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://quranontology.com/Resource/IsPartOf
+<http://quranontology.com/Resource/IsPartOf> rdf:type owl:ObjectProperty ,
+                                                      owl:TransitiveProperty ;
+                                             rdfs:domain [ rdf:type owl:Class ;
+                                                           owl:unionOf ( <http://quranontology.com/Resource/Verse>
+                                                                         :QuranicDua
+                                                                       )
+                                                         ] ;
+                                             rdfs:range [ rdf:type owl:Class ;
+                                                          owl:unionOf ( <http://quranontology.com/Resource/Chapter>
+                                                                        <http://quranontology.com/Resource/Verse>
+                                                                      )
+                                                        ] .
+
+
+###  http://quranontology.com/Resource/MentionedIn
+<http://quranontology.com/Resource/MentionedIn> rdf:type owl:ObjectProperty ,
+                                                         owl:TransitiveProperty ;
+                                                rdfs:domain [ rdf:type owl:Class ;
+                                                              owl:unionOf ( <http://quranontology.com/Resource/Location>
+                                                                            <http://quranontology.com/Resource/Prophet>
+                                                                          )
+                                                            ] ;
+                                                rdfs:range [ rdf:type owl:Class ;
+                                                             owl:unionOf ( <http://quranontology.com/Resource/Chapter>
+                                                                           <http://quranontology.com/Resource/Verse>
+                                                                         )
+                                                           ] .
+
+
+###  http://schema.org/author
+<http://schema.org/author> rdf:type owl:ObjectProperty ;
+                           rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
+                           rdfs:range <http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> .
+
+
+###  http://www.i-knex.com/ontology/hadith#hasHadithText
+<http://www.i-knex.com/ontology/hadith#hasHadithText> rdf:type owl:ObjectProperty ;
+                                                      rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                      rdfs:range <http://www.i-knex.com/ontology/hadith#HadithText> .
+
+
+###  http://www.i-knex.com/ontology/hadith#hasNarratorChain
+<http://www.i-knex.com/ontology/hadith#hasNarratorChain> rdf:type owl:ObjectProperty ;
+                                                         rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                         rdfs:range <http://www.i-knex.com/ontology/hadith#NarratorChain> .
+
+
+###  http://www.i-knex.com/ontology/hadith#hasNarratorSegment
+<http://www.i-knex.com/ontology/hadith#hasNarratorSegment> rdf:type owl:ObjectProperty ;
+                                                           rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChain> ;
+                                                           rdfs:range <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> .
+
+
+###  http://www.i-knex.com/ontology/hadith#hasRootNarratorSegment
+<http://www.i-knex.com/ontology/hadith#hasRootNarratorSegment> rdf:type owl:ObjectProperty ;
+                                                               rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChain> ;
+                                                               rdfs:range <http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment> .
+
+
+###  http://www.i-knex.com/ontology/hadith#isPartOfBook
+<http://www.i-knex.com/ontology/hadith#isPartOfBook> rdf:type owl:ObjectProperty ;
+                                                     rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithChapter> ;
+                                                     rdfs:range <http://www.i-knex.com/ontology/hadith#HadithBook> .
+
+
+###  http://www.i-knex.com/ontology/hadith#isPartOfChapter
+<http://www.i-knex.com/ontology/hadith#isPartOfChapter> rdf:type owl:ObjectProperty ;
+                                                        rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                        rdfs:range <http://www.i-knex.com/ontology/hadith#HadithChapter> .
+
+
+###  http://www.i-knex.com/ontology/hadith#isPartOfCollection
+<http://www.i-knex.com/ontology/hadith#isPartOfCollection> rdf:type owl:ObjectProperty ;
+                                                           rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithBook> ;
+                                                           rdfs:range <http://www.i-knex.com/ontology/hadith#HadithCollection> .
+
+
+###  http://www.i-knex.com/ontology/hadith#isPartOfHadith
+<http://www.i-knex.com/ontology/hadith#isPartOfHadith> rdf:type owl:ObjectProperty ;
+                                                       rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithText> ,
+                                                                   <http://www.i-knex.com/ontology/hadith#NarratorChain> ,
+                                                                   :HadithDua ;
+                                                       rdfs:range <http://www.i-knex.com/ontology/hadith#Hadith> .
+
+
+###  http://www.i-knex.com/ontology/hadith#refersToNarrator
+<http://www.i-knex.com/ontology/hadith#refersToNarrator> rdf:type owl:ObjectProperty ,
+                                                                  owl:FunctionalProperty ;
+                                                         rdfs:domain <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> ;
+                                                         rdfs:range <http://www.i-knex.com/ontology/hadith#HadithNarrator> .
+
+
+###  http://xmlns.com/foaf/0.1/topic
+<http://xmlns.com/foaf/0.1/topic> rdf:type owl:ObjectProperty ,
+                                           owl:TransitiveProperty ;
+                                  rdfs:domain :Dua ;
+                                  rdfs:range <http://www.semanticweb.org/szm/dua-ontology/DuaCategory> .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://quranontology.com/Resource/ChapterIndex
+<http://quranontology.com/Resource/ChapterIndex> rdf:type owl:DatatypeProperty ,
+                                                          owl:FunctionalProperty ;
+                                                 rdfs:domain <http://quranontology.com/Resource/Chapter> ;
+                                                 rdfs:range xsd:nonNegativeInteger .
+
+
+###  http://quranontology.com/Resource/DisplayText
+<http://quranontology.com/Resource/DisplayText> rdf:type owl:DatatypeProperty ;
+                                                rdfs:domain <http://quranontology.com/Resource/Verse> ;
+                                                rdfs:range xsd:string .
+
+
+###  http://quranontology.com/Resource/VerseAbsoluteIndex
+<http://quranontology.com/Resource/VerseAbsoluteIndex> rdf:type owl:DatatypeProperty ,
+                                                                owl:FunctionalProperty ;
+                                                       rdfs:domain <http://quranontology.com/Resource/Verse> ;
+                                                       rdfs:range xsd:nonNegativeInteger .
+
+
+###  http://quranontology.com/Resource/VerseIndex
+<http://quranontology.com/Resource/VerseIndex> rdf:type owl:DatatypeProperty ,
+                                                        owl:FunctionalProperty ;
+                                               rdfs:domain <http://quranontology.com/Resource/Verse> ;
+                                               rdfs:range xsd:nonNegativeInteger .
+
+
+###  http://www.i-knex.com/ontology/hadith#collectionName
+<http://www.i-knex.com/ontology/hadith#collectionName> rdf:type owl:DatatypeProperty ;
+                                                       rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
+                                                       rdfs:range xsd:string .
+
+
+###  http://www.i-knex.com/ontology/hadith#engBookNo
+<http://www.i-knex.com/ontology/hadith#engBookNo> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#engHadithNo
+<http://www.i-knex.com/ontology/hadith#engHadithNo> rdf:type owl:DatatypeProperty ;
+                                                    rdfs:subPropertyOf owl:topDataProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#engVolNo
+<http://www.i-knex.com/ontology/hadith#engVolNo> rdf:type owl:DatatypeProperty ;
+                                                 rdfs:domain <http://www.i-knex.com/ontology/hadith#HadithCollection> ;
+                                                 rdfs:range xsd:nonNegativeInteger .
+
+
+###  http://www.i-knex.com/ontology/hadith#fullHadithText
+<http://www.i-knex.com/ontology/hadith#fullHadithText> rdf:type owl:DatatypeProperty ,
+                                                                owl:FunctionalProperty ;
+                                                       rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                       rdfs:range xsd:string .
+
+
+###  http://www.i-knex.com/ontology/hadith#hadithBookIntro
+<http://www.i-knex.com/ontology/hadith#hadithBookIntro> rdf:type owl:DatatypeProperty ;
+                                                        rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                        rdfs:range xsd:string .
+
+
+###  http://www.i-knex.com/ontology/hadith#hadithBookNo
+<http://www.i-knex.com/ontology/hadith#hadithBookNo> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#hadithChapterNo
+<http://www.i-knex.com/ontology/hadith#hadithChapterNo> rdf:type owl:DatatypeProperty ;
+                                                        rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                        rdfs:range [ rdf:type rdfs:Datatype ;
+                                                                     owl:unionOf ( rdfs:Literal
+                                                                                   xsd:nonNegativeInteger
+                                                                                   xsd:string
+                                                                                 )
+                                                                   ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#hadithReferenceNo
+<http://www.i-knex.com/ontology/hadith#hadithReferenceNo> rdf:type owl:DatatypeProperty ,
+                                                                   owl:FunctionalProperty ;
+                                                          rdfs:domain <http://www.i-knex.com/ontology/hadith#Hadith> ;
+                                                          rdfs:range rdfs:Literal ,
+                                                                     xsd:nonNegativeInteger ,
+                                                                     xsd:string .
+
+
+###  http://www.i-knex.com/ontology/hadith#hadithText
+<http://www.i-knex.com/ontology/hadith#hadithText> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#hadithURL
+<http://www.i-knex.com/ontology/hadith#hadithURL> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#heardFrom
+<http://www.i-knex.com/ontology/hadith#heardFrom> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#name
+<http://www.i-knex.com/ontology/hadith#name> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#narratorChain
+<http://www.i-knex.com/ontology/hadith#narratorChain> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#narratorID
+<http://www.i-knex.com/ontology/hadith#narratorID> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#narratorURL
+<http://www.i-knex.com/ontology/hadith#narratorURL> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.i-knex.com/ontology/hadith#popularName
+<http://www.i-knex.com/ontology/hadith#popularName> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaArabicText
+:duaArabicText rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain :Dua ;
+               rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaEnglishText
+:duaEnglishText rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain :Dua ;
+                rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaEnglishTitle
+:duaEnglishTitle rdf:type owl:DatatypeProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain :Dua ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaId
+:duaId rdf:type owl:DatatypeProperty ,
+                owl:FunctionalProperty ;
+       rdfs:domain :Dua ;
+       rdfs:range xsd:nonNegativeInteger .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaType
+:duaType rdf:type owl:DatatypeProperty ;
+         rdfs:domain :Dua ;
+         rdfs:range xsd:string ;
+         rdfs:comment "@en or @ur" .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaUrduText
+:duaUrduText rdf:type owl:DatatypeProperty ,
+                      owl:FunctionalProperty ;
+             rdfs:domain :Dua ;
+             rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#duaUrduTitle
+:duaUrduTitle rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain :Dua ;
+              rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology/categoryEnglishTitle
+<http://www.semanticweb.org/szm/dua-ontology/categoryEnglishTitle> rdf:type owl:DatatypeProperty ;
+                                                                   rdfs:domain <http://www.semanticweb.org/szm/dua-ontology/DuaCategory> ;
+                                                                   rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology/categoryId
+<http://www.semanticweb.org/szm/dua-ontology/categoryId> rdf:type owl:DatatypeProperty ,
+                                                                  owl:FunctionalProperty ;
+                                                         rdfs:domain <http://www.semanticweb.org/szm/dua-ontology/DuaCategory> ;
+                                                         rdfs:range xsd:nonNegativeInteger .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology/categoryUrduTitle
+<http://www.semanticweb.org/szm/dua-ontology/categoryUrduTitle> rdf:type owl:DatatypeProperty ;
+                                                                rdfs:domain <http://www.semanticweb.org/szm/dua-ontology/DuaCategory> ;
+                                                                rdfs:range xsd:string .
+
+
+###  http://www.w3.org/2000/01/rdf-schema#label
+rdfs:label rdf:type owl:DatatypeProperty ;
+           rdfs:domain _:genid-nodeid-genid-84b9cfafc7b448d28206dd0f7145ba82-A6B633D72B1867E3E7FE0404F3161880 ;
+           rdfs:range xsd:string .
+
+
+###  http://www.w3.org/2002/07/owl#SameAs
+owl:SameAs rdf:type owl:DatatypeProperty ;
+           rdfs:domain <http://quranontology.com/Resource/Verse> ;
+           rdfs:range xsd:string .
+
+
+###  http://www.w3.org/2002/07/owl#equivalentClass
+owl:equivalentClass rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  _:genid-nodeid-genid-84b9cfafc7b448d28206dd0f7145ba82-A6B633D72B1867E3E7FE0404F3161880
+_:genid-nodeid-genid-84b9cfafc7b448d28206dd0f7145ba82-A6B633D72B1867E3E7FE0404F3161880 rdf:type owl:Class .
+
+
+###  http://quranontology.com/Resource/AfterlifeLocation
+<http://quranontology.com/Resource/AfterlifeLocation> rdf:type owl:Class ;
+                                                      rdfs:subClassOf <http://quranontology.com/Resource/Location> .
+
+
+###  http://quranontology.com/Resource/Chapter
+<http://quranontology.com/Resource/Chapter> rdf:type owl:Class ;
+                                            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty <http://quranontology.com/Resource/ChapterIndex> ;
+                                                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                  owl:onDataRange xsd:nonNegativeInteger
+                                                                ] ;
+                                            owl:disjointWith <http://quranontology.com/Resource/Verse> .
+
+
+###  http://quranontology.com/Resource/City
+<http://quranontology.com/Resource/City> rdf:type owl:Class ;
+                                         rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+
+###  http://quranontology.com/Resource/Construction
+<http://quranontology.com/Resource/Construction> rdf:type owl:Class ;
+                                                 rdfs:subClassOf <http://quranontology.com/Resource/Location> .
+
+
+###  http://quranontology.com/Resource/DivineLocation
+<http://quranontology.com/Resource/DivineLocation> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <http://quranontology.com/Resource/Location> .
+
+
+###  http://quranontology.com/Resource/GeographicalLocation
+<http://quranontology.com/Resource/GeographicalLocation> rdf:type owl:Class ;
+                                                         rdfs:subClassOf <http://quranontology.com/Resource/Location> .
+
+
+###  http://quranontology.com/Resource/HellLocation
+<http://quranontology.com/Resource/HellLocation> rdf:type owl:Class ;
+                                                 rdfs:subClassOf <http://quranontology.com/Resource/AfterlifeLocation> .
+
+
+###  http://quranontology.com/Resource/HistoricalPlace
+<http://quranontology.com/Resource/HistoricalPlace> rdf:type owl:Class ;
+                                                    rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+
+###  http://quranontology.com/Resource/Location
+<http://quranontology.com/Resource/Location> rdf:type owl:Class .
+
+
+###  http://quranontology.com/Resource/Mountain
+<http://quranontology.com/Resource/Mountain> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+
+###  http://quranontology.com/Resource/ParadiseLocation
+<http://quranontology.com/Resource/ParadiseLocation> rdf:type owl:Class ;
+                                                     rdfs:subClassOf <http://quranontology.com/Resource/AfterlifeLocation> .
+
+
+###  http://quranontology.com/Resource/Prophet
+<http://quranontology.com/Resource/Prophet> rdf:type owl:Class ;
+                                            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty rdfs:label ;
+                                                                  owl:someValuesFrom xsd:string
+                                                                ] ;
+                                            rdfs:subClassOf <http://schema.org/Person> .
+
+
+###  http://quranontology.com/Resource/River
+<http://quranontology.com/Resource/River> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+
+###  http://quranontology.com/Resource/Sea
+<http://quranontology.com/Resource/Sea> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://quranontology.com/Resource/GeographicalLocation> .
+
+
+###  http://quranontology.com/Resource/Verse
+<http://quranontology.com/Resource/Verse> rdf:type owl:Class ;
+                                          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                owl:onProperty <http://quranontology.com/Resource/VerseIndex> ;
+                                                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                owl:onDataRange xsd:nonNegativeInteger
+                                                              ] .
+
+
+###  http://schema.org/Person
+<http://schema.org/Person> rdf:type owl:Class .
+
+
+###  http://www.i-knex.com/ontology/hadith#Hadith
+<http://www.i-knex.com/ontology/hadith#Hadith> rdf:type owl:Class ;
+                                               owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfChapter> ;
+                                                                     owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithChapter>
+                                                                   ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#HadithBook
+<http://www.i-knex.com/ontology/hadith#HadithBook> rdf:type owl:Class ;
+                                                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfCollection> ;
+                                                                         owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithCollection>
+                                                                       ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#HadithChapter
+<http://www.i-knex.com/ontology/hadith#HadithChapter> rdf:type owl:Class ;
+                                                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfBook> ;
+                                                                            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#HadithBook>
+                                                                          ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#HadithCollection
+<http://www.i-knex.com/ontology/hadith#HadithCollection> rdf:type owl:Class ;
+                                                         owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty <http://www.i-knex.com/ontology/hadith#collectionName> ;
+                                                                               owl:someValuesFrom xsd:string
+                                                                             ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor
+<http://www.i-knex.com/ontology/hadith#HadithCollectionAuthor> rdf:type owl:Class ;
+                                                               rdfs:subClassOf <http://schema.org/Person> .
+
+
+###  http://www.i-knex.com/ontology/hadith#HadithNarrator
+<http://www.i-knex.com/ontology/hadith#HadithNarrator> rdf:type owl:Class ;
+                                                       rdfs:subClassOf <http://schema.org/Person> .
+
+
+###  http://www.i-knex.com/ontology/hadith#HadithText
+<http://www.i-knex.com/ontology/hadith#HadithText> rdf:type owl:Class ;
+                                                   owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfHadith> ;
+                                                                         owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#Hadith>
+                                                                       ] ,
+                                                                       [ rdf:type owl:Restriction ;
+                                                                         owl:onProperty <http://www.i-knex.com/ontology/hadith#hadithText> ;
+                                                                         owl:someValuesFrom xsd:string
+                                                                       ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#NarratorChain
+<http://www.i-knex.com/ontology/hadith#NarratorChain> rdf:type owl:Class ;
+                                                      owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty <http://www.i-knex.com/ontology/hadith#hasRootNarratorSegment> ;
+                                                                            owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment>
+                                                                          ] ,
+                                                                          [ rdf:type owl:Restriction ;
+                                                                            owl:onProperty <http://www.i-knex.com/ontology/hadith#narratorChain> ;
+                                                                            owl:someValuesFrom xsd:string
+                                                                          ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#NarratorChainSegment
+<http://www.i-knex.com/ontology/hadith#NarratorChainSegment> rdf:type owl:Class ;
+                                                             owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty <http://www.i-knex.com/ontology/hadith#refersToNarrator> ;
+                                                                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                                   owl:onClass <http://www.i-knex.com/ontology/hadith#HadithNarrator>
+                                                                                 ] .
+
+
+###  http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment
+<http://www.i-knex.com/ontology/hadith#RootNarratorChainSegment> rdf:type owl:Class ;
+                                                                 owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                                       owl:onProperty <http://www.i-knex.com/ontology/hadith#heardFrom> ;
+                                                                                       owl:maxQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+                                                                                       owl:onDataRange xsd:string
+                                                                                     ] ;
+                                                                 rdfs:subClassOf <http://www.i-knex.com/ontology/hadith#NarratorChainSegment> .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#Dua
+:Dua rdf:type owl:Class ;
+     owl:equivalentClass [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://xmlns.com/foaf/0.1/topic> ;
+                           owl:someValuesFrom <http://www.semanticweb.org/szm/dua-ontology/DuaCategory>
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :duaArabicText ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :duaEnglishText ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :duaEnglishTitle ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :duaUrduText ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :duaUrduTitle ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :duaId ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:nonNegativeInteger
+                         ] .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#HadithDua
+:HadithDua rdf:type owl:Class ;
+           owl:equivalentClass [ owl:intersectionOf ( :Dua
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <http://www.i-knex.com/ontology/hadith#isPartOfHadith> ;
+                                                        owl:someValuesFrom <http://www.i-knex.com/ontology/hadith#Hadith>
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+           rdfs:subClassOf :Dua ;
+           owl:disjointWith :QuranicDua .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology#QuranicDua
+:QuranicDua rdf:type owl:Class ;
+            owl:equivalentClass [ owl:intersectionOf ( :Dua
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty <http://quranontology.com/Resource/IsPartOf> ;
+                                                         owl:someValuesFrom <http://quranontology.com/Resource/Verse>
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ;
+            rdfs:subClassOf :Dua .
+
+
+###  http://www.semanticweb.org/szm/dua-ontology/DuaCategory
+<http://www.semanticweb.org/szm/dua-ontology/DuaCategory> rdf:type owl:Class ;
+                                                          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://www.semanticweb.org/szm/dua-ontology/categoryEnglishTitle> ;
+                                                                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                                owl:onDataRange xsd:string
+                                                                              ] ,
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://www.semanticweb.org/szm/dua-ontology/categoryId> ;
+                                                                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                                owl:onDataRange xsd:nonNegativeInteger
+                                                                              ] ,
+                                                                              [ rdf:type owl:Restriction ;
+                                                                                owl:onProperty <http://www.semanticweb.org/szm/dua-ontology/categoryUrduTitle> ;
+                                                                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                                owl:onDataRange xsd:string
+                                                                              ] .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.i-knex.com/ontology/hadith#hadithURL
+<http://www.i-knex.com/ontology/hadith#hadithURL> rdf:type owl:NamedIndividual ;
+                                                  rdfs:label "Hadith URL" .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+<http://www.i-knex.com/ontology/hadith#hadithURL> rdfs:comment "link to the hadith on the Islamic Urdu Website" .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
