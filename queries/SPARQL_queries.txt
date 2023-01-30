@@ -1,0 +1,18 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+
+SELECT *
+WHERE {
+	?dua rdf:type :Dua.
+	?dua :duaHasPrescription ?prescription.
+	?prescription :prescribedForOccasion ?occasion.
+	?occasion :occasionName ?name.
+	?prescription :prescribedRepetitions ?reps.
+	?prescription :prescribedMerit ?merit.
+}
+
