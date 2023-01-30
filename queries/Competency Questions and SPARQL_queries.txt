@@ -1,0 +1,210 @@
+1. Which Duas are from the Qur’an. Give their references.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?duaArabic ?duaEnglish ?chapName ?verseIndex
+WHERE {
+?dua rdf:type :QuranicDua.
+?dua qo:IsPartOf ?verse.
+?verse qo:VerseIndex ?verseIndex.
+?dua :duaArabicText ?duaArabic.
+?dua :duaEnglishText ?duaEnglish.
+?verse qo:ChapterIndex ?chapIndex.
+?chapter rdf:type qo:Chapter.
+?chapter qo:ChapterIndex ?chapIndex.
+?chapter rdfs:label ?chapName.
+FILTER (lang(?chapName) = "en")
+}
+
+
+2. Which Duas are from Ahadith. Give their references.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+SELECT ?dua ?duaArabic ?duaEnglish ?hadithFullRef
+WHERE {?dua rdf:type :HadithDua.
+?dua :duaArabicText ?duaArabic.
+?dua :duaEnglishText ?duaEnglish.
+?dua hVoc:isPartOfHadith ?hadith.
+?hadith hVoc:fullHadithText ?hadithText.
+?hadith hVoc:hadithReferenceNo ?hRefNo.
+?hadith hVoc:isPartOfChapter ?hChap.
+?hChap rdf:type hVoc:HadithChapter.
+?hChap hVoc:name ?hChapName.
+?hChap hVoc:isPartOfBook ?hBook.
+?hBook rdf:type hVoc:HadithBook.
+?hBook hVoc:name ?hBookName.
+?hBook hVoc:isPartOfCollection ?hCollection.
+?hCollection rdf:type hVoc:HadithCollection.
+?hCollection hVoc:name ?hCollectionName.
+BIND(CONCAT(?hBookName, "-", ?hChapName, "-", ?hRefNo) AS
+?hadithFullRef)
+}
+
+
+3. Show all duas, and their urdu translations.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT ?duaTitle ?arabicText ?urduText
+WHERE {
+?dua rdf:type :QuranicDua.
+?dua :duaUrduTitle ?duaTitle.
+?dua :duaArabicText ?arabicText.
+?dua :duaUrduText ?urduText.
+}
+
+
+4. Show categories to which each dua belongs to.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>SELECT ?duaTitle ?categoryName ?arabicText ?engText
+WHERE {
+?dua rdf:type :QuranicDua.
+?dua foaf:topic ?category.
+?category :categoryEnglishTitle ?categoryName.
+?dua :duaEnglishTitle ?duaTitle.
+?dua :duaEnglishText ?engText.
+?dua :duaArabicText ?arabicText.
+}
+
+
+5. Which Duas are from Sahih Bukhari: Book of Invocations?
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+SELECT DISTINCT ?dua ?duaArabic ?hBookName
+WHERE
+{
+?dua rdf:type :HadithDua.
+?dua :duaArabicText ?duaArabic.
+?dua hVoc:isPartOfHadith/hVoc:isPartOfChapter/hVoc:isPartOfBook
+?hBook.
+?hBook hVoc:name ?hBookName.
+FILTER contains(?hBookName,"Invocation")
+}
+
+
+6. List the root narrators for each dua.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+SELECT DISTINCT ?dua ?duaArabic ?hRootNarrator ?narratorNameWHERE
+{
+?dua rdf:type :HadithDua.
+?dua :duaArabicText ?duaArabic.
+?dua hVoc:isPartOfHadith ?hadith.
+?hadith
+hVoc:hasNarratorChain/hVoc:hasRootNarratorSegment/hVoc:refersToNarrator
+?hRootNarrator.
+?hNarrator hVoc:name ?narratorName.
+}
+
+
+7. What duas should we recite in the evening?
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX schema: <http://schema.org/>
+SELECT DISTINCT ?dua ?duaArabic ?categoryEnglish
+WHERE
+{
+?dua rdf:type :Dua.
+?dua :duaArabicText ?duaArabic.
+?dua foaf:topic ?category.
+?category :categoryEnglishTitle ?categoryEnglish.
+FILTER contains (lcase(str(?categoryEnglish)), "evening")
+}
+
+8. List duas that provide protection.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX schema: <http://schema.org/>SELECT DISTINCT ?dua ?duaArabic ?categoryEnglish
+WHERE
+{
+?dua rdf:type :Dua.
+?dua :duaArabicText ?duaArabic.
+?dua foaf:topic ?category.
+?category :categoryEnglishTitle ?categoryEnglish.
+FILTER(strlen(?duaArabic) > 0)
+FILTER contains (lcase(str(?categoryEnglish)), "protect")
+}
+
+
+9. List duas for attaining Paradise.
+
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX schema: <http://schema.org/>
+SELECT DISTINCT ?dua ?duaArabic ?categoryEnglish
+WHERE
+{
+?dua rdf:type :Dua.
+?dua :duaArabicText ?duaArabic.
+?dua foaf:topic ?category.
+?category :categoryEnglishTitle ?categoryEnglish.
+FILTER(strlen(?duaArabic) > 0)
+FILTER contains (lcase(str(?categoryEnglish)), "paradise")
+}
+10. List the types of each dua.
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+SELECT DISTINCT ?s ?o
+WHERE {
+?s :duaType ?o .
+}
+
+
+11. List at what "occasion" should a Dua be recited, how many times it should be "repeated", and what is the "merit" of reciting it.
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <http://www.semanticweb.org/szm/dua-ontology#>
+PREFIX qo: <http://quranontology.com/Resource/>
+PREFIX hVoc: <http://www.i-knex.com/ontology/hadith#>
+
+SELECT *
+WHERE {
+	?dua rdf:type :Dua.
+	?dua :duaHasPrescription ?prescription.
+	?prescription :prescribedForOccasion ?occasion.
+	?occasion :occasionName ?name.
+	?prescription :prescribedRepetitions ?reps.
+	?prescription :prescribedMerit ?merit.
+}
+
